@@ -1,0 +1,65 @@
+<!-- 8/8/25 -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title></title>
+   <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+
+
+<video id="video1" width="400">
+<source src="/W3schools learning/received_369629018013282.mp4" type="video/mp4">
+your browser doesn't support this video
+</video>
+<br><br>
+
+<div style="float:left">
+
+<button onclick="playPause()">Play/Pause</button>
+<button onclick="MakeSmall()">Smaller</button>
+<button onclick="MakeBig()">Bigger</button>
+<button onclick="DxSpeed()">2x Speed</button>
+</div>
+<br><br><br><br><br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/n6niwflQsOA?si=qFCPKXEY7zD5Fjp8" title="YouTube video player" frameborder="0" allow="accelerometer; controls; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+
+
+
+
+<script>
+var mv = document.getElementById("video1");
+
+function playPause()
+{
+    if (mv.paused)
+    mv.play();
+     else
+     mv.pause();
+}
+
+function MakeSmall()
+{
+    mv.width=200;
+}
+
+function MakeBig()
+{
+    mv.width=800;
+}
+
+function DxSpeed()
+{
+    mv.playbackRate=2;
+    mv.play();
+}
+
+
+   </script>
+ </body>
+ </html>

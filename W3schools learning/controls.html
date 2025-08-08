@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Custom Video Controls</title>
+  <style>
+    #video-controls {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    #video-controls button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    /* Smooth fade out */
+    #video-controls.hide {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none; /* disable clicks when hidden */
+    }
+    #video-controls.show {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+<video id="video1" width="400" src="/W3schools learning/received_369629018013282.mp4">
+  Your browser doesn't support this video.
+</video>
+
+<div id="video-controls" class="show">
+  <button id="play-pause">Play</button>
+  <button id="smaller">Smaller</button>
+  <button id="bigger">Bigger</button>
+  <button id="speed">2x Speed</button>
+  <button id="backward">« 10s</button>
+  <button id="forward">10s »</button>
+</div>
+
+<script>
+  const video = document.getElementById("video1");
+  const controls = document.getElementById("video-controls");
+  const playPauseBtn = document.getElementById("play-pause");
+  const smallerBtn = document.getElementById("smaller");
+  const biggerBtn = document.getElementById("bigger");
+  const speedBtn = document.getElementById("speed");
+  const backwardBtn = document.getElementById("backward");
+  const forwardBtn = document.getElementById("forward");
+
+  // Play / Pause toggle
+  playPauseBtn.addEventListener("click", () => {
+    if (video.paused) {
+      video.play();
+      playPauseBtn.textContent = "Pause";
+    } else {
+      video.pause();
+      playPauseBtn.textContent = "Play";
+    }
+  });
+
+  // Smaller button
+  smallerBtn.addEventListener("click", () => {
+    video.width = Math.max(100, video.width - 100);
+  });
+
+  // Bigger button
+  biggerBtn.addEventListener("click", () => {
+    video.width = Math.min(1000, video.width + 100);
+  });
+
+  // Speed button toggle between 1x and 2x
+  speedBtn.addEventListener("click", () => {
+    if (video.playbackRate === 1) {
+      video.playbackRate = 2;
+      speedBtn.textContent = "1x Speed";
+    } else {
+      video.playbackRate = 1;
+      speedBtn.textContent = "2x Speed";
+    }
+  });
+
+  // Backward 10 seconds
+  backwardBtn.addEventListener("click", () => {
+    video.currentTime = Math.max(0, video.currentTime - 10);
+  });
+
+  // Forward 10 seconds
+  forwardBtn.addEventListener("click", () => {
+    video.currentTime = Math.min(video.duration, video.currentTime + 10);
+  });
+
+  // Show controls on interaction, then hide after 3 seconds
+  let hideControlsTimeout;
+
+  function showControls() {
+    controls.classList.remove("hide");
+    controls.classList.add("show");
+
+    clearTimeout(hideControlsTimeout);
+    hideControlsTimeout = setTimeout(() => {
+      controls.classList.remove("show");
+      controls.classList.add("hide");
+    }, 3000);
+  }
+
+  // Show controls initially
+  showControls();
+
+  // Show controls on mousemove or touch
+  video.addEventListener("mousemove", showControls);
+  controls.addEventListener("mousemove", showControls);
+  video.addEventListener("touchstart", showControls);
+  controls.addEventListener("touchstart", showControls);
+</script>
+
+</body>
+</html>

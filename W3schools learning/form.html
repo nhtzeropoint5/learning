@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 5-8-25 -->
+  <label for="cars"></label>
+  <select id="cars" name="cars" size="3" multiple>
+    <option value="volvo">volvo</option>
+    <option value="saab" selected>saab</option>
+    <option value="fiat">fiat</option>
+    <option value="audi">audi</option>
+  </select>
+<br>
+
+<fieldset style="width:700px; height:300px">
+    <legend>textbox</legend>
+<textarea name="message" style="width:600px; height:200px"></textarea>
+<br>
+<button type="button" onclick="alert('hello there')">click me!</button>
+
+</fieldset>
+<br>
+<form action="/action_page.php">
+  <input list="browsers" name="browser">
+  <datalist id="browsers">
+    <option value="Edge">
+    <option value="Firefox">
+    <option value="Chrome">
+    <option value="Opera">
+    <option value="Safari">
+  </datalist>
+  <input type="submit">
+</form>
+<br><br>
+<form oninput="x.value=parseInt(a.value)+parseInt(b.value)">
+0
+<input type="range" id="a" name="a" value="50">
+100 +<br>
+<input type="number" id="b" name="b" value="50">
+=<br>
+<output name="x" for="a b"></output>
+<br>
+<input type="submit">
+</form>
+<!-- <form> 
+    <label for="fname">First name:</label><br>
+    <input type="text" id="fname" value="John" disabled size="20"><br>
+    <label for="pin">PIN:</label><br>
+    <input type="number" id="pin" name="pin" value="Doe">
+
+</form>-->
+
+<form>
+  <label for="fname">First name:</label><br>
+  <input type="text" id="fname" name="fname" size="50"><br><br>
+
+  <label for="pin">PIN:</label><br>
+  <input type="text" id="pin" name="pin" maxlength="4" size="4">
+  <span id="pinWarning" style="color: red; display: none;">Max 4 digits reached!</span>
+</form>
+
+<script>
+  const pinInput = document.getElementById("pin");
+  const warning = document.getElementById("pinWarning");
+
+  pinInput.addEventListener("input", function () {
+    if (pinInput.value.length >= pinInput.maxLength) {
+      warning.style.display = "inline";
+    } else {
+      warning.style.display = "none";
+    }
+  });
+</script>
+
+
+ 
+</body>
+</html>
