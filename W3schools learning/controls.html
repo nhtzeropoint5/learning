@@ -5,48 +5,104 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Custom Video Controls</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    #video-controls {
-      margin-top: 10px;
+    body {
+      background: white;
       display: flex;
-      gap: 10px;
+      justify-content: center;
       align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    #video-controls button {
-      padding: 5px 10px;
-      cursor: pointer;
+
+    #video-container {
+      position: relative;
+      width: fit-content;
+      max-width: 100%;
     }
-    /* Smooth fade out */
+
+    video {
+      display: block;
+      max-width: 100%;
+    }
+
+    #video-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+
+    .left, .right {
+  display: flex;
+  gap: 10px;
+  }
+
+    
+
     #video-controls.hide {
       opacity: 0;
       transition: opacity 0.5s ease;
-      pointer-events: none; /* disable clicks when hidden */
+      pointer-events: none;
     }
+
     #video-controls.show {
       opacity: 1;
       transition: opacity 0.5s ease;
       pointer-events: auto;
     }
+
+    #video-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 5px;
+    }
+
+    #video-controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
   </style>
 </head>
 <body>
 
-<video id="video1" width="400" src="/W3schools learning/received_369629018013282.mp4">
-  Your browser doesn't support this video.
-</video>
+<div id="video-container">
+  <video id="video1" width="400" src="/W3schools learning/received_369629018013282.mp4">
+    Your browser doesn't support this video.
+  </video>
 
-<div id="video-controls" class="show">
-  <button id="play-pause">Play</button>
-  <button id="smaller">Smaller</button>
-  <button id="bigger">Bigger</button>
-  <button id="speed">2x Speed</button>
-  <button id="backward">« 10s</button>
-  <button id="forward">10s »</button>
+  <div id="video-controls" class="show">
+    <div class="left">
+     <button id="play-pause"  title="Play/Pause"><i class="fas fa-play"></i></button>
+    <button id="backward" title="Rewind 10s"><i class="fas fa-backward"></i></button>
+    <button id="forward" title="Forward 10s"><i class="fas fa-forward"></i></button></div>
+    <div class="right">
+   <button id="speed"  title="Speed"><i class="fas fa-step-forward"></i>
+</button>
+    <button id="smaller"  title="Smaller"><i class="fas fa-search-minus"></i>
+</button>
+    <button id="bigger" title="Bigger"><i class="fas fa-search-plus"></i>
+</button></div>
+
+  </div>
 </div>
 
 <script>
   const video = document.getElementById("video1");
   const controls = document.getElementById("video-controls");
+  const container = document.getElementById("video-container");
   const playPauseBtn = document.getElementById("play-pause");
   const smallerBtn = document.getElementById("smaller");
   const biggerBtn = document.getElementById("bigger");
@@ -54,63 +110,82 @@
   const backwardBtn = document.getElementById("backward");
   const forwardBtn = document.getElementById("forward");
 
-  // Play / Pause toggle
+  let hideControlsTimeout;
+
+  // Play / Pause
   playPauseBtn.addEventListener("click", () => {
     if (video.paused) {
       video.play();
-      playPauseBtn.textContent = "Pause";
+     playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
     } else {
       video.pause();
-      playPauseBtn.textContent = "Play";
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+
     }
   });
 
-  // Smaller button
+  // Resize
   smallerBtn.addEventListener("click", () => {
     video.width = Math.max(100, video.width - 100);
   });
 
-  // Bigger button
   biggerBtn.addEventListener("click", () => {
     video.width = Math.min(1000, video.width + 100);
   });
 
-  // Speed button toggle between 1x and 2x
+  // Toggle speed
   speedBtn.addEventListener("click", () => {
     if (video.playbackRate === 1) {
       video.playbackRate = 2;
-      speedBtn.textContent = "1x Speed";
+      speedBtn.textContent = "1x";
     } else {
       video.playbackRate = 1;
-      speedBtn.textContent = "2x Speed";
+      speedBtn.textContent = "2x";
     }
   });
 
-  // Backward 10 seconds
+  // Seek
   backwardBtn.addEventListener("click", () => {
     video.currentTime = Math.max(0, video.currentTime - 10);
   });
 
-  // Forward 10 seconds
   forwardBtn.addEventListener("click", () => {
     video.currentTime = Math.min(video.duration, video.currentTime + 10);
   });
 
-  // Show controls on interaction, then hide after 3 seconds
-  let hideControlsTimeout;
-
+  // Show/hide controls
   function showControls() {
     controls.classList.remove("hide");
     controls.classList.add("show");
 
     clearTimeout(hideControlsTimeout);
-    hideControlsTimeout = setTimeout(() => {
-      controls.classList.remove("show");
-      controls.classList.add("hide");
-    }, 3000);
+    if (!video.paused) {
+      hideControlsTimeout = setTimeout(() => {
+        controls.classList.remove("show");
+        controls.classList.add("hide");
+      }, 2000);
+    }
   }
 
-  // Show controls initially
+  // Toggle icons when video plays/pauses
+  video.addEventListener("play", () => {
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+  });
+
+  video.addEventListener("pause", () => {
+   playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+
+    controls.classList.add("show");
+    controls.classList.remove("hide");
+    clearTimeout(hideControlsTimeout);
+  });
+
+  // Events to show controls
+  container.addEventListener("mousemove", showControls);
+  container.addEventListener("touchstart", showControls);
+
+  // Initially show controls
   showControls();
 
   // Show controls on mousemove or touch
