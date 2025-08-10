@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Browser test for Web Worker API</h1>
+  <p>Count numbers: <output id="result"></output></p>
+<button onclick="startWorker()">Start Worker</button>
+<button onclick="stopWorker()">Stop Worker</button>
+
+<div id="result"></div>
+
+
+<h1>Getting Server Updates</h1>
+
+<div id="result1"></div>
+
+
+  <script>
+    let w;
+   const x = document.getElementById("result");
+   if(typeof(Worker) !== "undefined"){
+    x.innerHTML = "your browser support web workers";
+   } else {
+    x.innerHTML = "unsupported";
+   }
+
+
+   function startWorker(){
+    if(typeof(Worker)!== "undefined"){
+  if(typeof(w) == "undefined"){
+    w = new Worker("/W3schools learning/demo_workers.js");
+   }
+   w.onmessage = function(event){
+    x.innerHTML = event.data;
+   };
+    }
+   }
+
+ 
+   function stopWorker(){
+   w.terminate();
+   w = undefined;
+
+
+const y = document.getElementById("result1");
+if(typeof(EventSource) !== "undefined") {
+  var source = new EventSource("demo_sse.php");
+  source.onmessage = function(event) {
+    y.innerHTML += event.data + "<br>";
+  };
+} else {
+  x.innerHTML = "Sorry, no support for server-sent events.";
+}
+
+
+
+
+
+   }
+  </script>
+</body>
+</html>
